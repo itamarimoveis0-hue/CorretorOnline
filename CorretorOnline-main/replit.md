@@ -139,6 +139,9 @@ Broker {
 ### Comandos
 ```bash
 npm run dev    # Inicia servidor de desenvolvimento
+npm run build  # Compila para produção
+npm start      # Inicia servidor compilado
+npm run check  # Verifica tipos TypeScript
 ```
 
 ### Portas
@@ -149,6 +152,33 @@ npm run dev    # Inicia servidor de desenvolvimento
 - Node.js 20
 - TypeScript
 - Vite para desenvolvimento rápido
+
+## Deployment no Railway
+
+### Configuração Automática
+O Railway detecta automaticamente:
+- **Build**: `npm run build` (compila Vite + esbuild)
+- **Start**: `npm start` (executa `node dist/index.js`)
+- **Port**: Usa `process.env.PORT` (Railway injeta automaticamente)
+
+### Passos para Deploy
+1. Conecte seu repositório GitHub ao Railway
+2. Railway criará um novo projeto
+3. Configure as variáveis de ambiente (opcional):
+   - `NODE_ENV=production` (geralmente já está definido)
+   - `DATABASE_URL` (opcional - para usar PostgreSQL)
+
+### Dados (In-Memory Storage)
+- Atualmente usa **MemStorage** (dados em memória)
+- Dados são perdidos quando a aplicação reinicia
+- Para persistência, configure PostgreSQL no Railway e atualize `server/storage.ts` para usar Drizzle ORM
+
+### Com Banco de Dados PostgreSQL (Futuro)
+Quando quiser persistência:
+1. Provisione PostgreSQL no Railway
+2. Configure `DATABASE_URL` como variável de ambiente
+3. Integre Drizzle ORM no `server/storage.ts`
+4. Execute migrations: `npm run db:push`
 
 ## Estado Atual
 
