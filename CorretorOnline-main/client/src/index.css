@@ -1,0 +1,313 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================
+   Root CSS variables (dark)
+   =========================== */
+:root {
+  --button-outline: rgba(0, 0, 0, .10);
+  --badge-outline: rgba(255, 255, 255, .06);
+  --opaque-button-border-intensity: -8;
+
+  --elevate-1: rgba(0, 0, 0, .03);
+  --elevate-2: rgba(0, 0, 0, .08);
+
+  /* BACKGROUND / FOREGROUND (dark theme) */
+  --background: 210 10% 10%;
+  --foreground: 210 10% 96%;
+  --border: 210 10% 18%;
+
+  /* Cards / surfaces */
+  --card: 210 10% 14%;
+  --card-foreground: 210 10% 96%;
+  --card-border: 210 10% 16%;
+
+  /* PRIMARY color (buttons, CTA) - strong orange */
+  --primary: 24 100% 50%;               /* #ff7b00 */
+  --primary-foreground: 0 0% 100%;
+  --primary-border: 24 95% 40%;
+
+  /* destructive / danger (keeps red behavior) */
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* status colors */
+  --status-online: 142 76% 45%;                /* green */
+  --status-online-foreground: 0 0% 100%;
+  --status-offline: 0 72% 45%;                 /* red */
+  --status-offline-foreground: 0 0% 100%;
+  --status-idle: 45 93% 58%;
+  --status-idle-foreground: 210 10% 96%;
+
+  /* charts / accents */
+  --chart-1: 210 85% 45%;
+  --chart-2: 142 76% 40%;
+  --chart-3: 45 93% 50%;
+  --chart-4: 280 65% 55%;
+  --chart-5: 30 80% 55%;
+
+  --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+}
+
+/* ===========================
+   Base layout
+   =========================== */
+html, body, #root {
+  height: 100%;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header / navbar gradient (orange) */
+header,
+.navbar,
+.topbar {
+  background: linear-gradient(90deg, #ff8c00 0%, #ff5e00 100%);
+  color: #ffffff;
+  padding: 1rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6); /* Linha branca */
+}
+
+/* Main container */
+.main-container {
+  background-color: hsl(var(--background));
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* ===========================
+   Cards e estrutura
+   =========================== */
+.card, .broker-card, .card-root {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover, .broker-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+/* ===========================
+   Botões principais
+   =========================== */
+.button, button, .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Botões primários (CTA) */
+.bg-primary, .btn-primary, .button-primary {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 1px solid rgba(255, 255, 255, 0.4) !important; /* Contorno branco */
+  box-shadow: 0 2px 8px rgba(255, 123, 0, 0.12);
+  padding: .6rem 1.1rem;
+  transition: all 0.25s ease;
+}
+.bg-primary:hover, .btn-primary:hover, .button-primary:hover {
+  filter: brightness(.95);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===========================
+   Status boxes ("0 Online" etc)
+   =========================== */
+.status-box {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: 10px;
+  padding: 0.85rem 1.2rem;
+  display: inline-block;
+  margin-right: .75rem;
+  font-weight: 700;
+}
+.status-box.online { border-left: 5px solid hsl(var(--status-online)); }
+.status-box.offline { border-left: 5px solid hsl(var(--status-offline)); }
+
+/* ===========================
+   BADGES de status
+   =========================== */
+[data-testid^="badge-status-"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1;
+  border: 1px solid rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.02);
+  color: hsl(var(--card-foreground));
+}
+
+/* Bolinha colorida */
+[data-testid="badge-status-online"]::before,
+[data-testid="badge-status-offline"]::before,
+[data-testid="badge-status-idle"]::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.12) inset;
+}
+
+/* Online */
+[data-testid="badge-status-online"] {
+  background-color: rgba(46, 125, 50, 0.12);
+  color: hsl(var(--status-online-foreground));
+  border-color: rgba(46, 125, 50, 0.18);
+}
+[data-testid="badge-status-online"]::before {
+  background-color: hsl(var(--status-online));
+}
+
+/* Offline */
+[data-testid="badge-status-offline"] {
+  background-color: rgba(211, 47, 47, 0.12);
+  color: hsl(var(--status-offline-foreground));
+  border-color: rgba(211, 47, 47, 0.18);
+}
+[data-testid="badge-status-offline"]::before {
+  background-color: hsl(var(--status-offline));
+}
+
+/* Idle */
+[data-testid="badge-status-idle"] {
+  background-color: rgba(255, 193, 7, 0.10);
+  color: hsl(var(--status-idle-foreground));
+  border-color: rgba(255, 193, 7, 0.16);
+}
+[data-testid="badge-status-idle"]::before {
+  background-color: hsl(var(--status-idle));
+}
+
+/* ===========================
+   Filtros (Todos / Online / Offline)
+   =========================== */
+button.filter,
+button[data-testid="filter-button"],
+button:has(> span:contains("Todos")),
+button:has(> span:contains("Online")),
+button:has(> span:contains("Offline")) {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+button.filter:hover,
+button[data-testid="filter-button"]:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+}
+
+/* ===========================
+   Footer
+   =========================== */
+footer {
+  background-color: hsl(var(--card));
+  color: rgba(255,255,255,0.6);
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+/* ===========================
+   💡 DICA EXTRA
+   =========================== */
+/* Se quiser deixar os contornos mais fortes (branco mais visível),
+   aumente a opacidade do rgba(255,255,255,X):
+   Exemplo → border: 1px solid rgba(255, 255, 255, 0.7);
+*/
+/* ===== FINAL TOUCH - White Borders & Button Effects ===== */
+
+/* Borda branca leve no botão principal */
+button, .btn, .button, .bg-primary, .btn-primary {
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.2s ease;
+}
+
+/* Botão "Adicionar Corretor" mais destacado */
+button.bg-primary:hover,
+.btn-primary:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.02);
+}
+
+/* Efeito de clique no "Adicionar Corretor" */
+button.bg-primary:active,
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Linha divisória branca entre o topo laranja e o conteúdo escuro */
+header, .navbar, .topbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ==== FILTROS: Todos / Online / Offline ==== */
+.filter-button, 
+button.filter,
+button[data-testid="filter-button"] {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  margin: 0 0.4rem;
+}
+
+/* Efeito hover */
+.filter-button:hover,
+button.filter:hover,
+button[data-testid="filter-button"]:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Efeito de clique idêntico ao "Adicionar Corretor" */
+.filter-button:active,
+button.filter:active,
+button[data-testid="filter-button"]:active {
+  transform: scale(0.96);
+  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Estado ativo (selecionado) */
+.filter-button.active,
+button.filter.active,
+button[data-testid="filter-button"].active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  transform: scale(1.02);
+}
+
+/* DICA OPCIONAL:
+   Se quiser deixar o contorno mais forte, troque o valor abaixo:
+   border: 1px solid rgba(255, 255, 255, 0.7);
+*/
